@@ -78,13 +78,14 @@ function log {
 	# Format the log message
 	TIMESTAMP=$(date $TIMESTAMP_FMT)
 
-	if (( $LOG_LEVEL_NUM >= $REQUESTED_LEVEL )); then
-		if $APPLY_COLORS; then
-			preamble="[$TIMESTAMP] ${LEVEL_COLOR} [$REQUESTED_LEVEL_NAME] "
-			printf "${BASH_GREY}${preamble}${LOG_MESSAGE}${BASH_NOCOLOR}\n"
-		else
-			echo [$TIMESTAMP] [$REQUESTED_LEVEL_NAME] $LOG_MESSAGE
-		fi
+	if (( $LOG_LEVEL_NUM < $REQUESTED_LEVEL )); then
+		return
+	fi
+	if $APPLY_COLORS; then
+		preamble="[$TIMESTAMP] ${LEVEL_COLOR} [$REQUESTED_LEVEL_NAME] "
+		printf "${BASH_GREY}${preamble}${LOG_MESSAGE}${BASH_NOCOLOR}\n"
+	else
+		echo [$TIMESTAMP] [$REQUESTED_LEVEL_NAME] $LOG_MESSAGE
 	fi
 
 }
